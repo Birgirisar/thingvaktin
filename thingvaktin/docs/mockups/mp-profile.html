@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anna Jónsdóttir — Þingvaktin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F2F5FA;
+  --ink: #0A1220;
+  --ink-70: rgba(10, 18, 32, 0.7);
+  --ink-55: rgba(10, 18, 32, 0.55);
+  --ink-40: rgba(10, 18, 32, 0.4);
+  --ink-20: rgba(10, 18, 32, 0.12);
+  --ink-08: rgba(10, 18, 32, 0.06);
+
+  --blue: #0A84FF;
+  --blue-deep: #0062CC;
+  --althingi: #174C97;
+  --green: #34C759;
+  --red: #FF3B30;
+  --orange: #FF9500;
+
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-strong: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 -1px 0 rgba(10, 18, 32, 0.04) inset, 0 20px 50px -24px rgba(10, 40, 90, 0.18);
+
+  /* Anna's party accent — Samfylkingin red */
+  --party: #D4222F;
+  --party-soft: rgba(212, 34, 47, 0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  font-size: 16px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== Background mesh ===== */
+.bg-mesh {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg-mesh::before,
+.bg-mesh::after,
+.bg-mesh span {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+.bg-mesh::before {
+  top: -20%;
+  left: -10%;
+  width: 55%;
+  height: 70%;
+  background: radial-gradient(circle, #BADAFF 0%, transparent 70%);
+  opacity: 0.7;
+}
+.bg-mesh::after {
+  top: 30%;
+  right: -15%;
+  width: 60%;
+  height: 80%;
+  background: radial-gradient(circle, #D6E4FF 0%, transparent 70%);
+  opacity: 0.8;
+}
+.bg-mesh span {
+  bottom: -20%;
+  left: 30%;
+  width: 50%;
+  height: 60%;
+  background: radial-gradient(circle, #EDE4FF 0%, transparent 70%);
+  opacity: 0.5;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.75rem;
+}
+
+/* ===== Nav ===== */
+.nav-wrap {
+  position: sticky;
+  top: 1rem;
+  z-index: 100;
+  padding: 0 1.75rem;
+  margin-top: 1rem;
+}
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--glass);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  padding: 0.55rem 0.75rem 0.55rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--glass-shadow);
+}
+.logo {
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+.logo-mark {
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, #2E6BC7 0%, #174C97 100%);
+  border-radius: 9px;
+  position: relative;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 4px 12px -2px rgba(23, 76, 151, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-mark svg { width: 20px; height: 20px; }
+.nav-links {
+  display: flex;
+  gap: 0.25rem;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--ink);
+  text-decoration: none;
+  opacity: 0.65;
+  transition: opacity 0.15s, background 0.15s;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 0.55rem 1rem;
+  border-radius: 100px;
+}
+.nav-links a:hover { opacity: 1; background: rgba(255, 255, 255, 0.5); }
+.nav-links a.active { opacity: 1; background: rgba(255, 255, 255, 0.6); }
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.5rem 0.9rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: var(--ink-70);
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+.share-btn:hover { background: rgba(255, 255, 255, 0.9); color: var(--ink); }
+
+/* ===== Breadcrumb ===== */
+.breadcrumb {
+  padding: 1.75rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-55);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.breadcrumb a {
+  color: var(--ink-55);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb .sep { opacity: 0.4; }
+
+/* ===== Profile header ===== */
+.profile-header {
+  padding: 2rem 0 3rem;
+  display: grid;
+  grid-template-columns: 180px 1fr auto;
+  gap: 2.25rem;
+  align-items: start;
+}
+
+.profile-photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(135deg, #6FA3E8 0%, #3D6FBF 100%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 20px 40px -20px rgba(10, 40, 90, 0.3);
+}
+.profile-photo::after {
+  content: 'AJ';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4.5rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: -0.04em;
+}
+
+.profile-meta { padding-top: 0.5rem; }
+
+.party-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--party-soft);
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--party);
+  margin-bottom: 1rem;
+}
+.party-tag::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--party);
+}
+
+.profile-name {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.profile-role {
+  font-size: 1.05rem;
+  color: var(--ink-55);
+  margin-bottom: 1.5rem;
+}
+
+.profile-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  font-size: 0.88rem;
+  color: var(--ink-70);
+}
+.profile-facts .fact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.profile-facts .fact svg {
+  width: 14px; height: 14px;
+  color: var(--ink-40);
+  flex-shrink: 0;
+}
+
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+}
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.7rem 1.1rem;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: none;
+  white-space: nowrap;
+}
+.action-btn.primary {
+  background: linear-gradient(180deg, #0A84FF 0%, #0062CC 100%);
+  color: white;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 4px 12px -2px rgba(10, 132, 255, 0.4);
+}
+.action-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 6px 16px -2px rgba(10, 132, 255, 0.5); }
+.action-btn.secondary {
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  color: var(--ink);
+}
+.action-btn.secondary:hover { background: rgba(255, 255, 255, 0.85); }
+
+/* ===== Key stats row ===== */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  padding: 1.5rem 1.5rem 1.35rem;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--ink-55);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.stat-label svg { width: 12px; height: 12px; }
+
+.stat-value {
+  font-size: 2.25rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+  font-variant-numeric: tabular-nums;
+}
+.stat-value .unit {
+  font-size: 0.55em;
+  color: var(--ink-40);
+  font-weight: 500;
+  margin-left: 0.05em;
+}
+
+.stat-trend {
+  font-size: 0.78rem;
+  color: var(--ink-55);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.stat-trend .up { color: var(--green); }
+.stat-trend .down { color: var(--red); }
+
+.stat-bar {
+  margin-top: 0.6rem;
+  height: 4px;
+  background: var(--ink-08);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.stat-bar > div {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--blue), #5EB4FF);
+}
+
+/* ===== Tabs ===== */
+.tabs-wrap {
+  position: sticky;
+  top: 5rem;
+  z-index: 50;
+  padding: 0.5rem 0 1.5rem;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 70%, transparent 100%);
+  margin-bottom: 0.5rem;
+}
+
+.tabs {
+  display: inline-flex;
+  gap: 0.2rem;
+  padding: 0.3rem;
+  background: var(--glass-strong);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  box-shadow: var(--glass-shadow);
+}
+
+.tab {
+  padding: 0.6rem 1.15rem;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--ink-70);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.tab:hover:not(.active) { color: var(--ink); }
+.tab.active {
+  background: var(--ink);
+  color: white;
+  box-shadow: 0 4px 12px -4px rgba(10, 18, 32, 0.3);
+}
+.tab .count {
+  font-size: 0.76rem;
+  opacity: 0.55;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.tab.active .count { opacity: 0.55; }
+
+/* ===== Glass card base ===== */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: var(--glass-shadow);
+}
+
+/* ===== Overview tab ===== */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.35s ease-out; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+}
+
+.card-head h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.card-head .meta {
+  font-size: 0.82rem;
+  color: var(--ink-55);
+}
+
+.card {
+  padding: 1.75rem;
+}
+
+/* Recent votes list */
+.recent-votes { display: flex; flex-direction: column; gap: 0; }
+.recent-vote {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--ink-08);
+  font-size: 0.9rem;
+}
+.recent-vote:last-child { border-bottom: none; }
+
+.rv-date {
+  font-size: 0.78rem;
+  color: var(--ink-55);
+  font-variant-numeric: tabular-nums;
+}
+
+.rv-title {
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.rv-position {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.rv-position.for { background: rgba(52, 199, 89, 0.15); color: #1E8A3E; }
+.rv-position.against { background: rgba(255, 59, 48, 0.12); color: #C7231C; }
+.rv-position.abstain { background: rgba(10, 18, 32, 0.08); color: var(--ink-70); }
+.rv-position.absent { background: rgba(255, 149, 0, 0.12); color: #B76B00; }
+
+/* Party loyalty chart */
+.loyalty {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  margin: 0.5rem auto 1.25rem;
+}
+.loyalty svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.loyalty .track { fill: none; stroke: var(--ink-08); stroke-width: 12; }
+.loyalty .fill {
+  fill: none;
+  stroke: var(--party);
+  stroke-width: 12;
+  stroke-linecap: round;
+  stroke-dasharray: 440;
+  stroke-dashoffset: 53;
+  animation: loyaltyFill 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+@keyframes loyaltyFill {
+  from { stroke-dashoffset: 440; }
+}
+.loyalty-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.loyalty-label strong {
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.loyalty-label span {
+  font-size: 0.75rem;
+  color: var(--ink-55);
+  margin-top: 0.25rem;
+}
+
+.loyalty-desc {
+  font-size: 0.85rem;
+  color: var(--ink-55);
+  text-align: center;
+  line-height: 1.5;
+}
+.loyalty-desc strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Topics */
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+.topic-pill {
+  padding: 0.35rem 0.75rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: rgba(10, 132, 255, 0.1);
+  color: var(--blue-deep);
+}
+.topic-pill .weight {
+  margin-left: 0.3rem;
+  opacity: 0.55;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Activity strip */
+.activity-strip {
+  display: grid;
+  grid-template-columns: repeat(26, 1fr);
+  gap: 3px;
+  margin-top: 0.9rem;
+}
+.activity-cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--ink-08);
+  transition: transform 0.15s;
+  cursor: pointer;
+}
+.activity-cell:hover { transform: scale(1.4); z-index: 1; position: relative; }
+.activity-cell.l1 { background: rgba(52, 199, 89, 0.25); }
+.activity-cell.l2 { background: rgba(52, 199, 89, 0.5); }
+.activity-cell.l3 { background: rgba(52, 199, 89, 0.75); }
+.activity-cell.l4 { background: #34C759; }
+.activity-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+  font-size: 0.76rem;
+  color: var(--ink-55);
+}
+.activity-legend .scale {
+  display: flex;
+  gap: 2px;
+}
+.activity-legend .scale > div {
+  width: 11px; height: 11px;
+  border-radius: 2px;
+}
+
+/* ===== VOTES TAB ===== */
+.votes-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  align-items: center;
+}
+
+.filter-group {
+  display: inline-flex;
+  gap: 0.2rem;
+  padding: 0.25rem;
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+}
+.filter-btn {
+  padding: 0.45rem 0.85rem;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 0.83rem;
+  font-weight: 500;
+  color: var(--ink-70);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-btn.active { background: var(--ink); color: white; }
+.filter-btn:hover:not(.active) { color: var(--ink); }
+
+.search-mini {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  padding: 0.45rem 1rem;
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+}
+.search-mini svg {
+  width: 15px; height: 15px;
+  color: var(--ink-40);
+  margin-right: 0.6rem;
+  flex-shrink: 0;
+}
+.search-mini input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.vote-list .vote-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 140px 120px;
+  gap: 1rem;
+  align-items: center;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--ink-08);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.vote-list .vote-row:last-child { border-bottom: none; }
+.vote-list .vote-row:hover { background: rgba(255, 255, 255, 0.4); }
+
+.vr-date { font-size: 0.78rem; color: var(--ink-55); font-variant-numeric: tabular-nums; }
+.vr-title { font-size: 0.92rem; font-weight: 500; line-height: 1.35; }
+.vr-outcome {
+  font-size: 0.78rem;
+  color: var(--ink-55);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.vr-outcome::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+.vr-outcome.passed::before { background: var(--green); }
+.vr-outcome.failed::before { background: var(--red); }
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .profile-header {
+    grid-template-columns: 120px 1fr;
+    gap: 1.5rem;
+  }
+  .profile-photo { width: 120px; height: 120px; border-radius: 20px; }
+  .profile-photo::after { font-size: 3rem; }
+  .profile-actions { grid-column: 1 / -1; flex-direction: row; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .overview-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .vote-list .vote-row {
+    grid-template-columns: 1fr 100px;
+    grid-template-areas: "title outcome" "date position";
+    gap: 0.35rem 1rem;
+    padding: 1rem 1.25rem;
+  }
+  .vr-date { grid-area: date; }
+  .vr-title { grid-area: title; }
+  .vr-outcome { grid-area: outcome; justify-self: end; }
+  .vote-list .rv-position { grid-area: position; justify-self: start; }
+}
+@media (max-width: 600px) {
+  .container, .nav-wrap { padding: 0 1rem; }
+  .profile-header { padding: 1.5rem 0 2rem; }
+  .stats-row { gap: 0.5rem; }
+  .stat-card { padding: 1.1rem 1rem; }
+  .stat-value { font-size: 1.75rem; }
+  .card { padding: 1.35rem; }
+  .tabs-wrap { top: 4.75rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tabs { min-width: max-content; }
+  .activity-strip { grid-template-columns: repeat(13, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- Background mesh -->
+<div class="bg-mesh"><span></span></div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="#" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 40 32" xmlns="http://www.w3.org/2000/svg" fill="white">
+          <path d="M20 2 L2 10 L38 10 Z" opacity="0.95"/>
+          <rect x="2" y="10" width="36" height="2" opacity="0.95"/>
+          <rect x="5" y="13" width="4" height="14" rx="1.5" opacity="0.95"/>
+          <rect x="12" y="13" width="4" height="14" rx="1.5" opacity="0.95"/>
+          <rect x="18" y="13" width="4" height="14" rx="1.5" opacity="0.95"/>
+          <rect x="24" y="13" width="4" height="14" rx="1.5" opacity="0.95"/>
+          <rect x="31" y="13" width="4" height="14" rx="1.5" opacity="0.95"/>
+          <rect x="2" y="27" width="36" height="3" opacity="0.95"/>
+        </svg>
+      </span>
+      Þingvaktin
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Þingmenn</a></li>
+      <li><a href="#">Atkvæðagreiðslur</a></li>
+      <li><a href="#">Þessa viku</a></li>
+      <li><a href="#">Um</a></li>
+    </ul>
+    <button class="share-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+      </svg>
+      Deila
+    </button>
+  </nav>
+</div>
+
+<div class="container">
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="#">Þingmenn</a>
+    <span class="sep">›</span>
+    <a href="#">Samfylkingin</a>
+    <span class="sep">›</span>
+    <span>Anna Jónsdóttir</span>
+  </div>
+
+  <!-- Profile header -->
+  <header class="profile-header">
+    <div class="profile-photo"></div>
+    <div class="profile-meta">
+      <span class="party-tag">Samfylkingin</span>
+      <h1 class="profile-name">Anna Jónsdóttir</h1>
+      <p class="profile-role">Þingmaður Reykjavíkurkjördæmis norður · Kjörin 2021</p>
+      <div class="profile-facts">
+        <span class="fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Fædd 1978
+        </span>
+        <span class="fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 13-8 13s-8-6-8-13a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Reykjavík
+        </span>
+        <span class="fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+          Formaður velferðarnefndar
+        </span>
+        <span class="fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          4 ár á þingi
+        </span>
+      </div>
+    </div>
+    <div class="profile-actions">
+      <button class="action-btn primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        Fylgjast með
+      </button>
+      <button class="action-btn secondary">
+        Bera saman
+      </button>
+    </div>
+  </header>
+
+  <!-- Key stats -->
+  <div class="stats-row">
+    <div class="stat-card glass">
+      <div class="stat-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Mæting
+      </div>
+      <div class="stat-value">97<span class="unit">%</span></div>
+      <div class="stat-bar"><div style="width: 97%"></div></div>
+    </div>
+    <div class="stat-card glass">
+      <div class="stat-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        Atkvæði greidd
+      </div>
+      <div class="stat-value">412</div>
+      <div class="stat-trend">af 425 alls</div>
+    </div>
+    <div class="stat-card glass">
+      <div class="stat-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Ræður
+      </div>
+      <div class="stat-value">68</div>
+      <div class="stat-trend">~14 klst. í ræðustól</div>
+    </div>
+    <div class="stat-card glass">
+      <div class="stat-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Flutt mál
+      </div>
+      <div class="stat-value">11</div>
+      <div class="stat-trend">3 samþykkt</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-wrap">
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="overview">Yfirlit</button>
+      <button class="tab" data-tab="votes">Atkvæði <span class="count">412</span></button>
+      <button class="tab" data-tab="speeches">Ræður <span class="count">68</span></button>
+      <button class="tab" data-tab="attendance">Mæting</button>
+      <button class="tab" data-tab="interests">Hagsmunir</button>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <section class="tab-panel active" id="panel-overview">
+
+    <div class="overview-grid">
+      <!-- Recent votes -->
+      <div class="card glass">
+        <div class="card-head">
+          <h3>Nýlegar atkvæðagreiðslur</h3>
+          <span class="meta">Síðustu 8</span>
+        </div>
+        <div class="recent-votes">
+          <div class="recent-vote">
+            <span class="rv-date">14. apríl</span>
+            <span class="rv-title">Hækkun barnabóta í áföngum</span>
+            <span class="rv-position for">Með</span>
+          </div>
+          <div class="recent-vote">
+            <span class="rv-date">12. apríl</span>
+            <span class="rv-title">Breyting á fiskveiðistjórnun</span>
+            <span class="rv-position for">Með</span>
+          </div>
+          <div class="recent-vote">
+            <span class="rv-date">10. apríl</span>
+            <span class="rv-title">Stuðningur við endurnýjanlega orku</span>
+            <span class="rv-position for">Með</span>
+          </div>
+          <div class="recent-vote">
+            <span class="rv-date">8. apríl</span>
+            <span class="rv-title">Niðurskurður í heilbrigðiskerfinu</span>
+            <span class="rv-position against">Á móti</span>
+          </div>
+          <div class="recent-vote">
+            <span class="rv-date">5. apríl</span>
+            <span class="rv-title">Frumvarp um húsnæðisstuðning</span>
+            <span class="rv-position for">Með</span>
+          </div>
+          <div class="recent-vote">
+            <span class="rv-date">3. apríl</span>
+            <span class="rv-title">Breytingar á útlendingalögum</span>
+            <span class="rv-position absent">Fjarverandi</span>
+          </div>
+          <div class="recent-vote">
+            <span class="rv-date">1. apríl</span>
+            <span class="rv-title">Lenging fæðingarorlofs</span>
+            <span class="rv-position for">Með</span>
+          </div>
+          <div class="recent-vote">
+            <span class="rv-date">28. mars</span>
+            <span class="rv-title">Frumvarp um loftslagsmarkmið 2030</span>
+            <span class="rv-position abstain">Sat hjá</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Party loyalty -->
+      <div class="card glass">
+        <div class="card-head">
+          <h3>Flokkshollusta</h3>
+        </div>
+        <div class="loyalty">
+          <svg viewBox="0 0 160 160">
+            <circle class="track" cx="80" cy="80" r="70"/>
+            <circle class="fill" cx="80" cy="80" r="70"/>
+          </svg>
+          <div class="loyalty-label">
+            <strong>88%</strong>
+            <span>með flokknum</span>
+          </div>
+        </div>
+        <p class="loyalty-desc">
+          Anna greiðir atkvæði með <strong>Samfylkingunni</strong> í 88% tilvika. Þingmeðaltal er 92%.
+        </p>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- Topics -->
+      <div class="card glass">
+        <div class="card-head">
+          <h3>Helstu málaflokkar</h3>
+          <span class="meta">Eftir ræðutíma og málum</span>
+        </div>
+        <div class="topics">
+          <span class="topic-pill">Velferðarmál<span class="weight">31%</span></span>
+          <span class="topic-pill">Heilbrigðismál<span class="weight">22%</span></span>
+          <span class="topic-pill">Barnamál<span class="weight">14%</span></span>
+          <span class="topic-pill">Húsnæðismál<span class="weight">11%</span></span>
+          <span class="topic-pill">Menntamál<span class="weight">8%</span></span>
+          <span class="topic-pill">Jafnréttismál<span class="weight">6%</span></span>
+          <span class="topic-pill">Annað<span class="weight">8%</span></span>
+        </div>
+      </div>
+
+      <!-- Activity -->
+      <div class="card glass">
+        <div class="card-head">
+          <h3>Virkni síðustu 6 mánuði</h3>
+        </div>
+        <div class="activity-strip" id="activity-strip"></div>
+        <div class="activity-legend">
+          <span>Minni</span>
+          <div class="scale">
+            <div style="background: var(--ink-08)"></div>
+            <div style="background: rgba(52, 199, 89, 0.25)"></div>
+            <div style="background: rgba(52, 199, 89, 0.5)"></div>
+            <div style="background: rgba(52, 199, 89, 0.75)"></div>
+            <div style="background: #34C759"></div>
+          </div>
+          <span>Meiri</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- VOTES -->
+  <section class="tab-panel" id="panel-votes">
+    <div class="votes-filters">
+      <div class="filter-group">
+        <button class="filter-btn active">Allt</button>
+        <button class="filter-btn">Með</button>
+        <button class="filter-btn">Á móti</button>
+        <button class="filter-btn">Sat hjá</button>
+        <button class="filter-btn">Fjarverandi</button>
+      </div>
+      <div class="filter-group">
+        <button class="filter-btn active">Þetta þing</button>
+        <button class="filter-btn">Allt kjörtímabilið</button>
+        <button class="filter-btn">Frá upphafi</button>
+      </div>
+      <div class="search-mini">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        <input type="text" placeholder="Leita í atkvæðum...">
+      </div>
+    </div>
+
+    <div class="card glass" style="padding: 0.25rem 0;">
+      <div class="vote-list">
+        <div class="vote-row">
+          <span class="vr-date">14. apríl</span>
+          <span class="vr-title">Hækkun barnabóta í áföngum</span>
+          <span class="rv-position for">Með</span>
+          <span class="vr-outcome passed">Samþykkt</span>
+        </div>
+        <div class="vote-row">
+          <span class="vr-date">12. apríl</span>
+          <span class="vr-title">Breyting á fiskveiðistjórnun</span>
+          <span class="rv-position for">Með</span>
+          <span class="vr-outcome failed">Felld</span>
+        </div>
+        <div class="vote-row">
+          <span class="vr-date">10. apríl</span>
+          <span class="vr-title">Stuðningur við endurnýjanlega orku</span>
+          <span class="rv-position for">Með</span>
+          <span class="vr-outcome passed">Samþykkt</span>
+        </div>
+        <div class="vote-row">
+          <span class="vr-date">8. apríl</span>
+          <span class="vr-title">Niðurskurður í heilbrigðiskerfinu</span>
+          <span class="rv-position against">Á móti</span>
+          <span class="vr-outcome failed">Felld</span>
+        </div>
+        <div class="vote-row">
+          <span class="vr-date">5. apríl</span>
+          <span class="vr-title">Frumvarp um húsnæðisstuðning</span>
+          <span class="rv-position for">Með</span>
+          <span class="vr-outcome passed">Samþykkt</span>
+        </div>
+        <div class="vote-row">
+          <span class="vr-date">3. apríl</span>
+          <span class="vr-title">Breytingar á útlendingalögum</span>
+          <span class="rv-position absent">Fjarverandi</span>
+          <span class="vr-outcome passed">Samþykkt</span>
+        </div>
+        <div class="vote-row">
+          <span class="vr-date">1. apríl</span>
+          <span class="vr-title">Lenging fæðingarorlofs</span>
+          <span class="rv-position for">Með</span>
+          <span class="vr-outcome passed">Samþykkt</span>
+        </div>
+        <div class="vote-row">
+          <span class="vr-date">28. mars</span>
+          <span class="vr-title">Frumvarp um loftslagsmarkmið 2030</span>
+          <span class="rv-position abstain">Sat hjá</span>
+          <span class="vr-outcome passed">Samþykkt</span>
+        </div>
+        <div class="vote-row">
+          <span class="vr-date">26. mars</span>
+          <span class="vr-title">Hækkun á persónuafslætti</span>
+          <span class="rv-position for">Með</span>
+          <span class="vr-outcome passed">Samþykkt</span>
+        </div>
+        <div class="vote-row">
+          <span class="vr-date">22. mars</span>
+          <span class="vr-title">Breytingar á lögum um leigubifreiðar</span>
+          <span class="rv-position against">Á móti</span>
+          <span class="vr-outcome passed">Samþykkt</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Placeholder panels for other tabs -->
+  <section class="tab-panel" id="panel-speeches">
+    <div class="card glass" style="text-align: center; padding: 4rem 2rem;">
+      <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Ræður</h3>
+      <p style="color: var(--ink-55);">Hér birtast allar 68 ræður Önnu með tengli í upptökur og umræður.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-attendance">
+    <div class="card glass" style="text-align: center; padding: 4rem 2rem;">
+      <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Mæting</h3>
+      <p style="color: var(--ink-55);">Mætingarmunstur eftir mánuðum, með samhengi (þingfrí, nefndarstörf, erlendar ferðir).</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="panel-interests">
+    <div class="card glass" style="text-align: center; padding: 4rem 2rem;">
+      <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Hagsmunaskrá</h3>
+      <p style="color: var(--ink-55);">Fjárhagslegar skráningar, hlutabréfaeign, stjórnarsetur og aðrar hagsmunaupplýsingar.</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+// Tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + target).classList.add('active');
+  });
+});
+
+// Activity strip - 26 weeks x roughly 1 cell per week
+const strip = document.getElementById('activity-strip');
+const pattern = [2,3,1,2,4,3,2,0,1,3,4,4,2,3,1,2,3,4,3,2,4,3,2,3,2,1]; // fake data
+pattern.forEach((level, i) => {
+  const cell = document.createElement('div');
+  cell.className = 'activity-cell' + (level > 0 ? ' l' + level : '');
+  cell.title = `Vika ${i+1}: ${level === 0 ? 'engin' : level === 1 ? 'lítil' : level === 2 ? 'miðlungs' : level === 3 ? 'mikil' : 'mjög mikil'} virkni`;
+  strip.appendChild(cell);
+});
+</script>
+
+</body>
+</html>

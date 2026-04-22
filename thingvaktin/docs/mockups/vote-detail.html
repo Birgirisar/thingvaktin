@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hækkun barnabóta í áföngum — Þingvaktin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F2F5FA;
+  --ink: #0A1220;
+  --ink-70: rgba(10, 18, 32, 0.7);
+  --ink-55: rgba(10, 18, 32, 0.55);
+  --ink-40: rgba(10, 18, 32, 0.4);
+  --ink-20: rgba(10, 18, 32, 0.12);
+  --ink-08: rgba(10, 18, 32, 0.06);
+
+  --blue: #0A84FF;
+  --blue-deep: #0062CC;
+  --althingi: #174C97;
+  --green: #34C759;
+  --green-deep: #1E8A3E;
+  --red: #FF3B30;
+  --red-deep: #C7231C;
+  --orange: #FF9500;
+  --orange-deep: #B76B00;
+
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-strong: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 -1px 0 rgba(10, 18, 32, 0.04) inset, 0 20px 50px -24px rgba(10, 40, 90, 0.18);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  font-size: 16px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== Background mesh ===== */
+.bg-mesh {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg-mesh::before,
+.bg-mesh::after,
+.bg-mesh span {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+.bg-mesh::before {
+  top: -20%; left: -10%;
+  width: 55%; height: 70%;
+  background: radial-gradient(circle, #BADAFF 0%, transparent 70%);
+  opacity: 0.7;
+}
+.bg-mesh::after {
+  top: 30%; right: -15%;
+  width: 60%; height: 80%;
+  background: radial-gradient(circle, #D6E4FF 0%, transparent 70%);
+  opacity: 0.8;
+}
+.bg-mesh span {
+  bottom: -20%; left: 30%;
+  width: 50%; height: 60%;
+  background: radial-gradient(circle, #EDE4FF 0%, transparent 70%);
+  opacity: 0.5;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.75rem;
+}
+
+/* ===== Nav ===== */
+.nav-wrap {
+  position: sticky;
+  top: 1rem;
+  z-index: 100;
+  padding: 0 1.75rem;
+  margin-top: 1rem;
+}
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--glass);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  padding: 0.55rem 0.75rem 0.55rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--glass-shadow);
+}
+.logo {
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+.logo-mark {
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, #2E6BC7 0%, #174C97 100%);
+  border-radius: 9px;
+  position: relative;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 4px 12px -2px rgba(23, 76, 151, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-mark svg { width: 20px; height: 20px; }
+.nav-links { display: flex; gap: 0.25rem; list-style: none; }
+.nav-links a {
+  color: var(--ink);
+  text-decoration: none;
+  opacity: 0.65;
+  transition: opacity 0.15s, background 0.15s;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 0.55rem 1rem;
+  border-radius: 100px;
+}
+.nav-links a:hover { opacity: 1; background: rgba(255, 255, 255, 0.5); }
+.nav-links a.active { opacity: 1; background: rgba(255, 255, 255, 0.6); }
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.5rem 0.9rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: var(--ink-70);
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+.share-btn:hover { background: rgba(255, 255, 255, 0.9); color: var(--ink); }
+
+/* ===== Breadcrumb ===== */
+.breadcrumb {
+  padding: 1.75rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-55);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.breadcrumb a {
+  color: var(--ink-55);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb .sep { opacity: 0.4; }
+
+/* ===== Vote header ===== */
+.vote-header {
+  padding: 2rem 0 2.5rem;
+}
+
+.vote-status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+.status-badge.passed { background: rgba(52, 199, 89, 0.15); color: var(--green-deep); }
+.status-badge.failed { background: rgba(255, 59, 48, 0.12); color: var(--red-deep); }
+.status-badge::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.vote-meta-inline {
+  font-size: 0.85rem;
+  color: var(--ink-55);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.vote-meta-inline .dot {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--ink-40);
+}
+
+.vote-title {
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 0.85rem;
+  max-width: 24ch;
+}
+
+.vote-subtitle {
+  font-size: 1.1rem;
+  color: var(--ink-55);
+  line-height: 1.5;
+  max-width: 48rem;
+}
+
+/* ===== Summary card (the hero differentiator) ===== */
+.summary-card {
+  padding: 2rem 2.25rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.summary-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 2rem; bottom: 2rem;
+  width: 3px;
+  background: linear-gradient(180deg, var(--blue) 0%, #5EB4FF 100%);
+  border-radius: 0 3px 3px 0;
+}
+
+.summary-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--blue-deep);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.85rem;
+}
+.summary-label svg { width: 14px; height: 14px; }
+
+.summary-card h2 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.1rem;
+}
+
+.summary-card p {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--ink-70);
+  margin-bottom: 1rem;
+  max-width: 56ch;
+}
+.summary-card p:last-of-type { margin-bottom: 0; }
+.summary-card strong { color: var(--ink); font-weight: 600; }
+
+/* ===== Quick facts ===== */
+.facts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.fact-card {
+  padding: 1.25rem 1.35rem 1.2rem;
+}
+.fact-label {
+  font-size: 0.75rem;
+  color: var(--ink-55);
+  margin-bottom: 0.45rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.fact-label svg { width: 12px; height: 12px; }
+.fact-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.fact-value.small { font-size: 0.88rem; }
+
+/* ===== Result hero ===== */
+.result-card {
+  padding: 2.25rem 2.25rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.result-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.result-head h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.result-head .view-source {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--blue);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.result-head .view-source:hover { color: var(--blue-deep); }
+
+.result-split {
+  display: flex;
+  gap: 0;
+  height: 12px;
+  border-radius: 100px;
+  overflow: hidden;
+  background: var(--ink-08);
+  margin-bottom: 1.25rem;
+}
+.result-split > div {
+  position: relative;
+  transition: flex 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.result-split .for { background: linear-gradient(90deg, #2BA44C, #34C759); }
+.result-split .against { background: linear-gradient(90deg, #E52E24, #FF3B30); }
+.result-split .abstain { background: rgba(10, 18, 32, 0.3); }
+.result-split .absent { background: var(--orange); }
+
+.result-tallies {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.tally {
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+.tally-label {
+  font-size: 0.78rem;
+  color: var(--ink-55);
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.tally-label::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--tally-color);
+}
+.tally-value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--tally-color);
+}
+.tally-pct {
+  font-size: 0.78rem;
+  color: var(--ink-55);
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.25rem;
+}
+.tally.for { --tally-color: var(--green-deep); }
+.tally.against { --tally-color: var(--red-deep); }
+.tally.abstain { --tally-color: var(--ink-70); }
+.tally.absent { --tally-color: var(--orange-deep); }
+
+/* ===== Section base ===== */
+.section-card {
+  padding: 2rem 2.25rem;
+  margin-bottom: 1rem;
+}
+.section-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+.section-card h3 .hint {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--ink-55);
+  letter-spacing: 0;
+}
+
+/* ===== Glass card base ===== */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: var(--glass-shadow);
+}
+
+/* ===== Party breakdown ===== */
+.party-rows { display: flex; flex-direction: column; gap: 0.85rem; }
+
+.party-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 140px;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 0.6rem 0;
+}
+
+.party-name {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+.party-name::before {
+  content: '';
+  width: 10px; height: 10px;
+  border-radius: 3px;
+  background: var(--party-color, var(--ink-40));
+  flex-shrink: 0;
+}
+.party-name .seats {
+  font-size: 0.78rem;
+  color: var(--ink-55);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.party-split {
+  height: 10px;
+  border-radius: 100px;
+  overflow: hidden;
+  background: var(--ink-08);
+  display: flex;
+  gap: 1px;
+}
+.party-split > div {
+  height: 100%;
+  animation: growWidth 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+@keyframes growWidth {
+  from { transform: scaleX(0); transform-origin: left; }
+}
+.party-split .for { background: var(--green); }
+.party-split .against { background: var(--red); }
+.party-split .abstain { background: var(--ink-40); }
+.party-split .absent { background: var(--orange); }
+
+.party-summary {
+  font-size: 0.82rem;
+  color: var(--ink-55);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.party-summary strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.party-summary .unity {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  background: rgba(52, 199, 89, 0.12);
+  border-radius: 100px;
+  color: var(--green-deep);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+.party-summary .unity.split {
+  background: rgba(255, 149, 0, 0.12);
+  color: var(--orange-deep);
+}
+
+/* ===== MP grid ===== */
+.mp-legend {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+  color: var(--ink-70);
+}
+.mp-legend .item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.mp-legend .swatch {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--c);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.55rem;
+  font-weight: 700;
+}
+
+.mp-party-group {
+  margin-bottom: 1.25rem;
+}
+.mp-party-group:last-child { margin-bottom: 0; }
+
+.mp-group-label {
+  font-size: 0.78rem;
+  color: var(--ink-55);
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.mp-group-label::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  background: var(--party-color);
+}
+
+.mp-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mp-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--c, var(--ink-20));
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  position: relative;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+}
+.mp-dot:hover {
+  transform: scale(1.2);
+  z-index: 2;
+  box-shadow: 0 4px 12px -2px rgba(10, 18, 32, 0.3);
+}
+.mp-dot.for { --c: var(--green); }
+.mp-dot.against { --c: var(--red); }
+.mp-dot.abstain { --c: #6E7784; }
+.mp-dot.absent { --c: var(--orange); }
+
+/* Tooltip */
+.mp-dot::after {
+  content: attr(data-name) ' · ' attr(data-position);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--ink);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.mp-dot:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ===== Timeline ===== */
+.timeline { position: relative; padding-left: 1.5rem; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px; top: 6px; bottom: 6px;
+  width: 1.5px;
+  background: var(--ink-20);
+}
+
+.tl-item { position: relative; padding-bottom: 1.5rem; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -1.5rem;
+  top: 4px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--ink-40);
+}
+.tl-item.current::before {
+  background: var(--blue);
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.2);
+}
+
+.tl-date {
+  font-size: 0.76rem;
+  color: var(--ink-55);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.2rem;
+}
+.tl-title {
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.35;
+  margin-bottom: 0.2rem;
+}
+.tl-desc {
+  font-size: 0.85rem;
+  color: var(--ink-55);
+  line-height: 1.5;
+}
+
+/* ===== Source strip ===== */
+.source-strip {
+  padding: 1.5rem 2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 3rem;
+  font-size: 0.85rem;
+  color: var(--ink-55);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.source-strip a {
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.source-strip a:hover { color: var(--blue-deep); }
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .facts-grid { grid-template-columns: repeat(2, 1fr); }
+  .result-tallies { grid-template-columns: repeat(2, 1fr); }
+  .party-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .party-summary { justify-content: flex-start; text-align: left; }
+  .nav-links { display: none; }
+}
+
+@media (max-width: 600px) {
+  .container, .nav-wrap { padding: 0 1rem; }
+  .summary-card, .section-card, .result-card { padding: 1.5rem 1.35rem; }
+  .summary-card::before { top: 1.5rem; bottom: 1.5rem; }
+  .facts-grid { grid-template-columns: 1fr 1fr; }
+  .mp-dot { width: 26px; height: 26px; font-size: 0.68rem; }
+  .source-strip { padding: 1.25rem 1.35rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Background mesh -->
+<div class="bg-mesh"><span></span></div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="#" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 40 32" xmlns="http://www.w3.org/2000/svg" fill="white">
+          <path d="M20 2 L2 10 L38 10 Z" opacity="0.95"/>
+          <rect x="2" y="10" width="36" height="2" opacity="0.95"/>
+          <rect x="5" y="13" width="4" height="14" rx="1.5" opacity="0.95"/>
+          <rect x="12" y="13" width="4" height="14" rx="1.5" opacity="0.95"/>
+          <rect x="18" y="13" width="4" height="14" rx="1.5" opacity="0.95"/>
+          <rect x="24" y="13" width="4" height="14" rx="1.5" opacity="0.95"/>
+          <rect x="31" y="13" width="4" height="14" rx="1.5" opacity="0.95"/>
+          <rect x="2" y="27" width="36" height="3" opacity="0.95"/>
+        </svg>
+      </span>
+      Þingvaktin
+    </a>
+    <ul class="nav-links">
+      <li><a href="#">Þingmenn</a></li>
+      <li><a href="#" class="active">Atkvæðagreiðslur</a></li>
+      <li><a href="#">Þessa viku</a></li>
+      <li><a href="#">Um</a></li>
+    </ul>
+    <button class="share-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+      </svg>
+      Deila
+    </button>
+  </nav>
+</div>
+
+<div class="container">
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="#">Atkvæðagreiðslur</a>
+    <span class="sep">›</span>
+    <a href="#">156. löggjafarþing</a>
+    <span class="sep">›</span>
+    <span>Hækkun barnabóta</span>
+  </div>
+
+  <!-- Header -->
+  <header class="vote-header">
+    <div class="vote-status-row">
+      <span class="status-badge passed">Samþykkt</span>
+      <span class="vote-meta-inline">
+        <span>14. apríl 2026</span>
+        <span class="dot"></span>
+        <span>Frumvarp · 3. umræða</span>
+        <span class="dot"></span>
+        <span>Mál nr. 214/156</span>
+      </span>
+    </div>
+    <h1 class="vote-title">Hækkun barnabóta í áföngum</h1>
+    <p class="vote-subtitle">
+      Frumvarp ríkisstjórnarinnar um breytingu á lögum um tekjuskatt, lið V um barnabætur.
+    </p>
+  </header>
+
+  <!-- PLAIN LANGUAGE SUMMARY — the hero of this page -->
+  <section class="summary-card glass">
+    <div class="summary-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+      </svg>
+      Í stuttu máli
+    </div>
+    <h2>Hvað var verið að kjósa um?</h2>
+    <p>
+      Þetta frumvarp hækkar <strong>barnabætur um 15%</strong> á næstu þremur árum. Hækkunin verður í þrepum — um 5% árlega frá og með 2026. Markmiðið er að styðja betur við barnafjölskyldur með <strong>meðaltekjur</strong>; ekki er verið að hækka þak á bótum fyrir tekjuhæstu heimilin.
+    </p>
+    <p>
+      Frumvarpið kemur frá ríkisstjórninni og er hluti af efnahagsaðgerðum tengdum kjarasamningum 2025. Samkvæmt mati fjármálaráðuneytisins kostar þetta ríkissjóð um <strong>4,2 milljarða króna</strong> á ári þegar hækkunin er komin að fullu til framkvæmda.
+    </p>
+    <p>
+      Helstu ágreiningsefni: Sjálfstæðisflokkurinn gagnrýndi útgjaldaaukann og vildi í staðinn lækka tekjuskatt. Miðflokkurinn sat hjá og benti á að hækkunin nái ekki til barnafjölskyldna á landsbyggðinni með sama hætti og þeirra í þéttbýli.
+    </p>
+  </section>
+
+  <!-- Quick facts -->
+  <div class="facts-grid">
+    <div class="fact-card glass">
+      <div class="fact-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Flutningsmaður
+      </div>
+      <div class="fact-value small">Fjármála- og efnahagsráðherra</div>
+    </div>
+    <div class="fact-card glass">
+      <div class="fact-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Nefnd
+      </div>
+      <div class="fact-value small">Velferðarnefnd</div>
+    </div>
+    <div class="fact-card glass">
+      <div class="fact-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+        Lagt fram
+      </div>
+      <div class="fact-value small">22. janúar 2026</div>
+    </div>
+    <div class="fact-card glass">
+      <div class="fact-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
+        Umsagnir
+      </div>
+      <div class="fact-value small">47 umsagnir</div>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <section class="result-card glass">
+    <div class="result-head">
+      <h3>Niðurstaða</h3>
+      <a href="#" class="view-source">
+        Á althingi.is
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+      </a>
+    </div>
+    <div class="result-split">
+      <div class="for" style="flex: 42"></div>
+      <div class="against" style="flex: 14"></div>
+      <div class="abstain" style="flex: 7"></div>
+    </div>
+    <div class="result-tallies">
+      <div class="tally for">
+        <div class="tally-label">Með</div>
+        <div class="tally-value">42</div>
+        <div class="tally-pct">67%</div>
+      </div>
+      <div class="tally against">
+        <div class="tally-label">Á móti</div>
+        <div class="tally-value">14</div>
+        <div class="tally-pct">22%</div>
+      </div>
+      <div class="tally abstain">
+        <div class="tally-label">Sátu hjá</div>
+        <div class="tally-value">7</div>
+        <div class="tally-pct">11%</div>
+      </div>
+      <div class="tally absent">
+        <div class="tally-label">Fjarverandi</div>
+        <div class="tally-value">0</div>
+        <div class="tally-pct">0%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Party breakdown -->
+  <section class="section-card glass">
+    <h3>
+      Eftir flokkum
+      <span class="hint">Hvernig hver þingflokkur greiddi atkvæði</span>
+    </h3>
+    <div class="party-rows" id="party-rows"></div>
+  </section>
+
+  <!-- Every MP -->
+  <section class="section-card glass">
+    <h3>
+      Hver greiddi atkvæði hvernig?
+      <span class="hint">Smelltu á þingmann til að sjá heildarferil</span>
+    </h3>
+    <div class="mp-legend">
+      <span class="item"><span class="swatch" style="--c: var(--green)">M</span>Með</span>
+      <span class="item"><span class="swatch" style="--c: var(--red)">Á</span>Á móti</span>
+      <span class="item"><span class="swatch" style="--c: #6E7784">H</span>Sat hjá</span>
+      <span class="item"><span class="swatch" style="--c: var(--orange)">F</span>Fjarverandi</span>
+    </div>
+    <div id="mp-groups"></div>
+  </section>
+
+  <!-- Timeline / context -->
+  <section class="section-card glass">
+    <h3>Ferill málsins</h3>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">22. janúar 2026</div>
+        <div class="tl-title">Lagt fram á Alþingi</div>
+        <div class="tl-desc">Fjármála- og efnahagsráðherra lagði frumvarpið fram ásamt 14 meðflutningsmönnum.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">30. janúar 2026</div>
+        <div class="tl-title">1. umræða lokið · vísað í nefnd</div>
+        <div class="tl-desc">Umræður stóðu í tæpa 4 klst. 23 þingmenn tóku til máls.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">5. febrúar – 12. mars</div>
+        <div class="tl-title">Meðferð í velferðarnefnd</div>
+        <div class="tl-desc">Nefndin hélt 6 fundi og tók við 47 umsögnum. Tvö nefndarálit voru gefin út — meirihlutaálit og minnihlutaálit.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">18. mars 2026</div>
+        <div class="tl-title">2. umræða · 8 breytingartillögur</div>
+        <div class="tl-desc">3 breytingartillögur samþykktar, 5 felldar.</div>
+      </div>
+      <div class="tl-item current">
+        <div class="tl-date">14. apríl 2026</div>
+        <div class="tl-title">3. umræða · atkvæðagreiðsla</div>
+        <div class="tl-desc"><strong>Samþykkt með 42 atkvæðum gegn 14.</strong> 7 þingmenn sátu hjá.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Source -->
+  <div class="source-strip glass">
+    <div>Öll gögn sótt beint úr opinni gagnaveitu Alþingis · Uppfært fyrir 2 klst.</div>
+    <a href="#">
+      Skoða upprunaleg gögn
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+    </a>
+  </div>
+
+</div>
+
+<script>
+// Party data: how each party voted on "Hækkun barnabóta"
+// Realistic fictional scenario:
+// - Samfylkingin (15): all for
+// - Sjálfstæðisflokkurinn (14): 2 for, 12 against
+// - Viðreisn (11): all for
+// - Miðflokkurinn (8): 0 for, 2 against, 6 abstain
+// - Flokkur fólksins (7): all for
+// - Framsókn (5): all for
+// - Píratar (3): 2 for, 1 abstain
+
+const parties = [
+  {
+    name: 'Samfylkingin', color: '#D4222F', seats: 15,
+    mps: [
+      {n:'Anna Jónsdóttir', v:'for'}, {n:'Einar Aðalsteinsson', v:'for'}, {n:'Sara Björk', v:'for'},
+      {n:'Karl Sveinsson', v:'for'}, {n:'Heiða Björg', v:'for'}, {n:'Jón Kaldal', v:'for'},
+      {n:'Eva Dögg', v:'for'}, {n:'Þorvaldur Gylfason', v:'for'}, {n:'Sólveig Anna', v:'for'},
+      {n:'Rakel Óskars', v:'for'}, {n:'Logi Einarsson', v:'for'}, {n:'Ragna Sigurðar', v:'for'},
+      {n:'Magnús Kr.', v:'for'}, {n:'Dagbjört Hákon', v:'for'}, {n:'Stefán Vagn', v:'for'}
+    ]
+  },
+  {
+    name: 'Sjálfstæðisflokkurinn', color: '#005BA4', seats: 14,
+    mps: [
+      {n:'Björn Þorsteinsson', v:'against'}, {n:'Bjarni Benediktsson', v:'against'},
+      {n:'Áslaug Arna', v:'against'}, {n:'Guðlaugur Þór', v:'against'},
+      {n:'Þórdís Kolbrún', v:'for'}, {n:'Diljá Mist', v:'against'},
+      {n:'Jón Gunnarsson', v:'against'}, {n:'Óli Björn', v:'against'},
+      {n:'Vilhjálmur Árnason', v:'against'}, {n:'Hildur Sverrisdóttir', v:'for'},
+      {n:'Friðjón R.', v:'against'}, {n:'Haraldur Benediktsson', v:'against'},
+      {n:'Teitur Björn', v:'against'}, {n:'Berglind Ósk', v:'against'}
+    ]
+  },
+  {
+    name: 'Viðreisn', color: '#F7921E', seats: 11,
+    mps: [
+      {n:'Kristín Magnúsdóttir', v:'for'}, {n:'Þorgerður Katrín', v:'for'},
+      {n:'Hanna Katrín', v:'for'}, {n:'Sigmar Guðmundsson', v:'for'},
+      {n:'Guðbrandur Einarsson', v:'for'}, {n:'Daði Már', v:'for'},
+      {n:'Ingibjörg Isaksen', v:'for'}, {n:'Viktor Orri', v:'for'},
+      {n:'Halla Hrund', v:'for'}, {n:'Pawel Bartoszek', v:'for'},
+      {n:'Þorbjörg S.', v:'for'}
+    ]
+  },
+  {
+    name: 'Miðflokkurinn', color: '#0A2B59', seats: 8,
+    mps: [
+      {n:'Hildur Gunnarsdóttir', v:'abstain'}, {n:'Sigmundur Davíð', v:'against'},
+      {n:'Bergþór Ólason', v:'abstain'}, {n:'Jakob Frímann', v:'against'},
+      {n:'Nanna Margrét', v:'abstain'}, {n:'Anna Kristín', v:'abstain'},
+      {n:'Karl Gauti', v:'abstain'}, {n:'Snorri Másson', v:'abstain'}
+    ]
+  },
+  {
+    name: 'Flokkur fólksins', color: '#E8B517', seats: 7,
+    mps: [
+      {n:'Þóra Sigfúsdóttir', v:'for'}, {n:'Inga Sæland', v:'for'},
+      {n:'Ásthildur Lóa', v:'for'}, {n:'Tómas A.', v:'for'},
+      {n:'Eyjólfur Ármannsson', v:'for'}, {n:'Guðmundur Ingi', v:'for'},
+      {n:'Jakob Frímann', v:'for'}
+    ]
+  },
+  {
+    name: 'Framsókn', color: '#107C38', seats: 5,
+    mps: [
+      {n:'Sigurður Hansson', v:'for'}, {n:'Lilja Alfreðsdóttir', v:'for'},
+      {n:'Willum Þór', v:'for'}, {n:'Ingibjörg Ólöf', v:'for'},
+      {n:'Ásmundur Einar', v:'for'}
+    ]
+  },
+  {
+    name: 'Píratar', color: '#6B3E8A', seats: 3,
+    mps: [
+      {n:'Guðmundur Ólafsson', v:'for'}, {n:'Björn Leví', v:'for'},
+      {n:'Halldóra Mogensen', v:'abstain'}
+    ]
+  }
+];
+
+const letterMap = { for: 'M', against: 'Á', abstain: 'H', absent: 'F' };
+const labelMap  = { for: 'Með', against: 'Á móti', abstain: 'Sat hjá', absent: 'Fjarverandi' };
+
+// Render party rows
+const partyRows = document.getElementById('party-rows');
+parties.forEach((party, pi) => {
+  const counts = { for: 0, against: 0, abstain: 0, absent: 0 };
+  party.mps.forEach(mp => counts[mp.v]++);
+  const total = party.seats;
+  const dominant = Object.entries(counts).sort((a,b) => b[1]-a[1])[0];
+  const unity = dominant[1] / total;
+  const unityLabel = unity === 1 ? 'Samstaða' : unity >= 0.75 ? 'Nærri samstaða' : 'Skipting';
+  const unityClass = unity >= 0.75 ? '' : 'split';
+
+  const summaryParts = [];
+  if (counts.for)     summaryParts.push(`<strong>${counts.for}</strong> með`);
+  if (counts.against) summaryParts.push(`<strong>${counts.against}</strong> á móti`);
+  if (counts.abstain) summaryParts.push(`<strong>${counts.abstain}</strong> hjá`);
+  if (counts.absent)  summaryParts.push(`<strong>${counts.absent}</strong> fjarv.`);
+
+  const row = document.createElement('div');
+  row.className = 'party-row';
+  row.innerHTML = `
+    <div class="party-name" style="--party-color: ${party.color}">
+      <span>${party.name}</span>
+      <span class="seats">· ${party.seats}</span>
+    </div>
+    <div class="party-split">
+      ${counts.for ? `<div class="for" style="flex: ${counts.for}; animation-delay: ${pi * 60}ms"></div>` : ''}
+      ${counts.against ? `<div class="against" style="flex: ${counts.against}; animation-delay: ${pi * 60}ms"></div>` : ''}
+      ${counts.abstain ? `<div class="abstain" style="flex: ${counts.abstain}; animation-delay: ${pi * 60}ms"></div>` : ''}
+      ${counts.absent ? `<div class="absent" style="flex: ${counts.absent}; animation-delay: ${pi * 60}ms"></div>` : ''}
+    </div>
+    <div class="party-summary">
+      ${summaryParts.join(' · ')}
+    </div>
+  `;
+  partyRows.appendChild(row);
+});
+
+// Render MP groups
+const mpGroups = document.getElementById('mp-groups');
+parties.forEach(party => {
+  const group = document.createElement('div');
+  group.className = 'mp-party-group';
+  group.innerHTML = `
+    <div class="mp-group-label" style="--party-color: ${party.color}">${party.name}</div>
+    <div class="mp-dots">
+      ${party.mps.map(mp => `
+        <span class="mp-dot ${mp.v}" data-name="${mp.n}" data-position="${labelMap[mp.v]}">${letterMap[mp.v]}</span>
+      `).join('')}
+    </div>
+  `;
+  mpGroups.appendChild(group);
+});
+</script>
+
+</body>
+</html>
